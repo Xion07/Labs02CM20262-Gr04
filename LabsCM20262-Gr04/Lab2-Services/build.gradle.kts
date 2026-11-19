@@ -15,6 +15,7 @@
  */
 
 
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -43,7 +44,7 @@ android {
         // APK firmado (entrega): keystore propio del grupo si existe (lab2-release.jks + keystore.properties),
         // de lo contrario se firma con el debug keystore local de Android Studio.
         create("release") {
-            val props = java.util.Properties()
+            val props = Properties()
             val propsFile = rootProject.file("keystore.properties")
             if (propsFile.exists()) {
                 propsFile.inputStream().use { props.load(it) }
