@@ -1,0 +1,262 @@
+/*
+ * Copyright 2020 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package co.edu.udea.compumovil.gr04_20262.lab2.profile
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.blur.BlurRadiusSpec
+import androidx.compose.ui.graphics.blur.BlurStop
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import co.edu.udea.compumovil.gr04_20262.lab2.FunctionalityNotAvailablePopup
+import co.edu.udea.compumovil.gr04_20262.lab2.R
+import co.edu.udea.compumovil.gr04_20262.lab2.components.AnimatingFabContent
+import co.edu.udea.compumovil.gr04_20262.lab2.components.baselineHeight
+import co.edu.udea.compumovil.gr04_20262.lab2.data.colleagueProfile
+import co.edu.udea.compumovil.gr04_20262.lab2.data.meProfile
+import co.edu.udea.compumovil.gr04_20262.lab2.theme.JetchatTheme
+
+@Composable
+fun ProfileScreen(userData: ProfileScreenState) {
+    var functionalityNotAvailablePopupShown by remember { mutableStateOf(false) }
+    if (functionalityNotAvailablePopupShown) {
+        FunctionalityNotAvailablePopup { functionalityNotAvailablePopupShown = false }
+    }
+
+    val scrollState = rememberScrollState()
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        Surface {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.surfaceContainer)
+                    .verticalScroll(scrollState),
+            ) {
+                ProfileHeader(userData)
+                UserInfoFields(userData)
+            }
+        }
+    }
+}
+
+@Composable
+private fun UserInfoFields(userData: ProfileScreenState) {
+    Column(modifier = Modifier.navigationBarsPadding()) {
+        Spacer(modifier = Modifier.height(40.dp))
+
+        NameAndPosition(userData)
+
+        ProfileProperty(stringResource(R.string.display_name), userData.displayName)
+
+        ProfileProperty(stringResource(R.string.status), userData.status)
+
+        ProfileProperty(stringResource(R.string.twitter), userData.twitter, isLink = true)
+
+        userData.timeZone?.let {
+            ProfileProperty(stringResource(R.string.timezone), userData.timeZone)
+        }
+    }
+}
+
+@Composable
+private fun NameAndPosition(userData: ProfileScreenState) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        Name(
+            userData,
+            modifier = Modifier.baselineHeight(32.sp),
+        )
+        Position(
+            userData,
+            modifier = Modifier
+                .padding(bottom = 20.dp)
+                .baselineHeight(24.sp),
+        )
+    }
+}
+
+@Composable
+private fun Name(userData: ProfileScreenState, modifier: Modifier = Modifier) {
+    Text(
+        text = userData.name,
+        modifier = modifier,
+        style = MaterialTheme.typography.headlineLarge,
+        color = MaterialTheme.colorScheme.onSurface,
+    )
+}
+
+@Composable
+private fun Position(userData: ProfileScreenState, modifier: Modifier = Modifier) {
+    Text(
+        text = userData.position,
+        modifier = modifier,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+}
+
+@Composable
+private fun ProfileHeader(data: ProfileScreenState) {
+    data.photo?.let {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .blur {
+                    radius = BlurRadiusSpec.verticalGradient(
+                        listOf(
+                            BlurStop(0.5f, 0.dp),
+                            BlurStop(1.0f, 32.dp),
+                        ),
+                    )
+                    edgeTreatment = BlurredEdgeTreatment.Unbounded
+                },
+            painter = painterResource(id = it),
+            contentScale = ContentScale.FillWidth,
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+fun ProfileProperty(label: String, value: String, isLink: Boolean = false) {
+    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+        HorizontalDivider()
+        Text(
+            text = label,
+            modifier = Modifier.baselineHeight(24.sp),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        val style = if (isLink) {
+            MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary)
+        } else {
+            MaterialTheme.typography.bodyLarge
+        }
+        Text(
+            text = value,
+            modifier = Modifier.baselineHeight(24.sp),
+            style = style,
+        )
+    }
+}
+
+@Composable
+fun ProfileError() {
+    Text(stringResource(R.string.profile_error))
+}
+
+@Composable
+fun ProfileFab(extended: Boolean, userIsMe: Boolean, modifier: Modifier = Modifier, onFabClicked: () -> Unit = { }) {
+    key(userIsMe) {
+        // Prevent multiple invocations to execute during composition
+        FloatingActionButton(
+            onClick = onFabClicked,
+            modifier = modifier
+                .padding(16.dp)
+                .navigationBarsPadding()
+                .height(48.dp)
+                .widthIn(min = 48.dp),
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        ) {
+            AnimatingFabContent(
+                icon = {
+                    Icon(
+                        painter = painterResource(id = if (userIsMe) R.drawable.ic_create else R.drawable.ic_chat),
+                        contentDescription = stringResource(
+                            if (userIsMe) R.string.edit_profile else R.string.message,
+                        ),
+                    )
+                },
+                text = {
+                    Text(
+                        text = stringResource(
+                            id = if (userIsMe) R.string.edit_profile else R.string.message,
+                        ),
+                    )
+                },
+                extended = extended,
+            )
+        }
+    }
+}
+
+@Preview(widthDp = 640, heightDp = 360)
+@Composable
+fun ConvPreviewLandscapeMeDefault() {
+    JetchatTheme {
+        ProfileScreen(meProfile)
+    }
+}
+
+@Preview(widthDp = 360, heightDp = 480)
+@Composable
+fun ConvPreviewPortraitMeDefault() {
+    JetchatTheme {
+        ProfileScreen(meProfile)
+    }
+}
+
+@Preview(widthDp = 360, heightDp = 480)
+@Composable
+fun ConvPreviewPortraitOtherDefault() {
+    JetchatTheme {
+        ProfileScreen(colleagueProfile)
+    }
+}
+
+@Preview
+@Composable
+fun ProfileFabPreview() {
+    JetchatTheme {
+        ProfileFab(extended = true, userIsMe = false)
+    }
+}
