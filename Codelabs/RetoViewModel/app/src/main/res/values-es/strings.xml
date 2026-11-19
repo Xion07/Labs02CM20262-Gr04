@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Reto ViewModel (Ordena la palabra)</string>
+    <string name="app_title">Ordena la palabra</string>
+    <string name="submit">Enviar</string>
+    <string name="skip">Saltar</string>
+    <string name="score">Puntaje: %1$d</string>
+    <string name="word_count">%1$d de %2$d</string>
+    <string name="instructions">Ordena la palabra usando todas las letras mostradas.</string>
+    <string name="enter_your_word">Escribe tu palabra</string>
+    <string name="wrong_guess">¡Respuesta incorrecta!</string>
+    <string name="congratulations">¡Felicitaciones!</string>
+    <string name="you_scored">Tu puntaje: %1$d</string>
+    <string name="exit">Salir</string>
+    <string name="play_again">Jugar de nuevo</string>
+</resources>

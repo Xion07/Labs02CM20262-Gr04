@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Teclado modificado</string>
+    <string name="title">Formulario de registro</string>
+    <string name="f_name">Nombre</string>
+    <string name="f_email">Correo</string>
+    <string name="f_phone">Teléfono</string>
+    <string name="f_age">Edad</string>
+    <string name="f_amount">Valor</string>
+    <string name="f_web">Sitio web</string>
+    <string name="f_password">Contraseña</string>
+    <string name="f_comment">Comentario</string>
+    <string name="f_search">Búsqueda</string>
+    <string name="f_city">Ciudad</string>
+    <string name="h_name">Text + mayúscula por palabra, autocorrección desactivada, IME Next</string>
+    <string name="h_email">KeyboardType.Email (muestra @), IME Next</string>
+    <string name="h_phone">KeyboardType.Phone, IME Next, + opcional al inicio y luego dígitos</string>
+    <string name="h_age">KeyboardType.Number (solo enteros, no requiere ocultar), máx. 3 dígitos</string>
+    <string name="h_amount">KeyboardType.Decimal (dígitos y un separador decimal: . o ,), IME Next</string>
+    <string name="h_web">KeyboardType.Uri (muestra / y .com), IME Next</string>
+    <string name="h_password">KeyboardType.Password + PasswordVisualTransformation, IME Next</string>
+    <string name="h_comment">Mayúscula por oración, IME Default (salto de línea), multilínea</string>
+    <string name="h_search">ImeAction.Search + KeyboardActions(onSearch) muestra un Snackbar</string>
+    <string name="h_city">Mayúscula por palabra, ImeAction.Done oculta el teclado y limpia el foco</string>
+    <string name="show">Ver</string>
+    <string name="hide">Ocultar</string>
+    <string name="submit">Enviar</string>
+    <string name="ok">Aceptar</string>
+    <string name="summary_title">Resumen del formulario</string>
+    <string name="err_required">Campo obligatorio</string>
+    <string name="err_email">Correo no válido</string>
+    <string name="err_password">Mínimo 6 caracteres</string>
+    <string name="search_snackbar">Buscando: %1$s</string>
+</resources>
