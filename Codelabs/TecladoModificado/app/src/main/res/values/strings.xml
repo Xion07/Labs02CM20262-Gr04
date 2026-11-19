@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Modified keyboard</string>
+    <string name="title">Sign-up form</string>
+    <string name="f_name">Name</string>
+    <string name="f_email">Email</string>
+    <string name="f_phone">Phone</string>
+    <string name="f_age">Age</string>
+    <string name="f_amount">Amount</string>
+    <string name="f_web">Website</string>
+    <string name="f_password">Password</string>
+    <string name="f_comment">Comment</string>
+    <string name="f_search">Search</string>
+    <string name="f_city">City</string>
+    <string name="h_name">Text + Words capitalization, autoCorrect off, IME Next</string>
+    <string name="h_email">KeyboardType.Email (shows @), IME Next</string>
+    <string name="h_phone">KeyboardType.Phone, IME Next, optional leading + then digits</string>
+    <string name="h_age">KeyboardType.Number (integers only, no password hiding needed), max 3 digits</string>
+    <string name="h_amount">KeyboardType.Decimal (digits, one decimal separator: . or ,), IME Next</string>
+    <string name="h_web">KeyboardType.Uri (shows / and .com), IME Next</string>
+    <string name="h_password">KeyboardType.Password + PasswordVisualTransformation, IME Next</string>
+    <string name="h_comment">Sentences capitalization, IME Default (new line), multiline</string>
+    <string name="h_search">ImeAction.Search + KeyboardActions(onSearch) shows a Snackbar</string>
+    <string name="h_city">Words capitalization, ImeAction.Done hides keyboard and clears focus</string>
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="submit">Submit</string>
+    <string name="ok">OK</string>
+    <string name="summary_title">Form summary</string>
+    <string name="err_required">Required field</string>
+    <string name="err_email">Invalid email</string>
+    <string name="err_password">At least 6 characters</string>
+    <string name="search_snackbar">Searching: %1$s</string>
+</resources>
