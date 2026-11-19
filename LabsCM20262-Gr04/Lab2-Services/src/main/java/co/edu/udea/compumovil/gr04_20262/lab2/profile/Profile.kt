@@ -101,6 +101,19 @@ private fun UserInfoFields(userData: ProfileScreenState) {
         ProfileProperty(stringResource(R.string.status), userData.status)
 
         ProfileProperty(stringResource(R.string.twitter), userData.twitter, isLink = true)
+        // Lab 2: datos traídos del servicio REST (dummyjson)
+        if (userData.remoteJob.isNotBlank()) {
+            ProfileProperty(
+                stringResource(R.string.profile_rest_job),
+                stringResource(R.string.profile_job_at, userData.remoteJob, userData.remoteCompany),
+            )
+        }
+        if (userData.remoteEmail.isNotBlank()) {
+            ProfileProperty(stringResource(R.string.profile_rest_email), userData.remoteEmail, isLink = true)
+        }
+        if (userData.remoteUsername.isNotBlank()) {
+            ProfileProperty(stringResource(R.string.profile_rest_username), "@" + userData.remoteUsername)
+        }
 
         userData.timeZone?.let {
             ProfileProperty(stringResource(R.string.timezone), userData.timeZone)

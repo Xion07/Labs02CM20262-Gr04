@@ -50,10 +50,12 @@ class ProfileViewModel : ViewModel() {
         viewModelScope.launch {
             runCatching { ApiClient.api.user(remoteId) }.onSuccess { u ->
                 val current = _userData.value ?: return@onSuccess
+                // Datos complementarios del servicio REST; los del ejemplo se conservan
                 _userData.value = current.copy(
-                    position = "${u.company.title} at ${u.company.name}",
-                    displayName = u.username.ifBlank { current.displayName },
-                    twitter = u.email.ifBlank { current.twitter },
+                    remoteJob = u.company.title,
+                    remoteCompany = u.company.name,
+                    remoteEmail = u.email,
+                    remoteUsername = u.username,
                 )
             }
         }
@@ -74,6 +76,11 @@ data class ProfileScreenState(
     val twitter: String = "",
     val timeZone: String?, // Null if me
     val commonChannels: String?, // Null if me
+    // Lab 2: complementados con https://dummyjson.com/users/{id}
+    val remoteJob: String = "",
+    val remoteCompany: String = "",
+    val remoteEmail: String = "",
+    val remoteUsername: String = "",
 ) {
     fun isMe() = userId == meProfile.userId
 }
