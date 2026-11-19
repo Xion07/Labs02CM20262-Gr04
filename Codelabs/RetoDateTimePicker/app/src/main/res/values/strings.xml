@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">DatePicker and TimePicker Challenge</string>
+    <string name="screen_title">Book appointment</string>
+    <string name="date_label">Date</string>
+    <string name="time_label">Time</string>
+    <string name="select_date">Select a date</string>
+    <string name="select_time">Select a time</string>
+    <string name="open_calendar">Open calendar</string>
+    <string name="open_clock">Open clock</string>
+    <string name="accept">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_time_title">Select time</string>
+    <string name="switch_to_keyboard">Switch to keyboard input</string>
+    <string name="switch_to_clock">Switch to clock</string>
+    <string name="summary_title">Appointment summary</string>
+    <string name="summary_empty">Choose a date and a time</string>
+    <string name="summary_date">Date: %1$s</string>
+    <string name="summary_time">Time: %1$s</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirmed">Appointment confirmed for %1$s at %2$s</string>
+    <string name="time_past_error">The selected time has already passed</string>
+</resources>

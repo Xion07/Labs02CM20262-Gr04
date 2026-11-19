@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Reto DatePicker y TimePicker</string>
+    <string name="screen_title">Agendar cita</string>
+    <string name="date_label">Fecha</string>
+    <string name="time_label">Hora</string>
+    <string name="select_date">Selecciona una fecha</string>
+    <string name="select_time">Selecciona una hora</string>
+    <string name="open_calendar">Abrir calendario</string>
+    <string name="open_clock">Abrir reloj</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select_time_title">Selecciona la hora</string>
+    <string name="switch_to_keyboard">Cambiar a entrada por teclado</string>
+    <string name="switch_to_clock">Cambiar a reloj</string>
+    <string name="summary_title">Resumen de la cita</string>
+    <string name="summary_empty">Elige una fecha y una hora</string>
+    <string name="summary_date">Fecha: %1$s</string>
+    <string name="summary_time">Hora: %1$s</string>
+    <string name="confirm">Confirmar</string>
+    <string name="confirmed">Cita confirmada para el %1$s a las %2$s</string>
+    <string name="time_past_error">La hora seleccionada ya pasó</string>
+</resources>
