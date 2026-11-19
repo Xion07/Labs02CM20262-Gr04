@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Reto ViewModel (Unscramble)</string>
+    <string name="app_title">Unscramble</string>
+    <string name="submit">Submit</string>
+    <string name="skip">Skip</string>
+    <string name="score">Score: %1$d</string>
+    <string name="word_count">%1$d of %2$d</string>
+    <string name="instructions">Unscramble the word using all the letters shown.</string>
+    <string name="enter_your_word">Enter your word</string>
+    <string name="wrong_guess">Wrong Guess!</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="you_scored">You scored: %1$d</string>
+    <string name="exit">Exit</string>
+    <string name="play_again">Play Again</string>
+</resources>
