@@ -95,6 +95,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draganddrop.DragAndDropEvent
 import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.draganddrop.mimeTypes
@@ -123,6 +124,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.edu.udea.compumovil.gr04_20262.lab2.FunctionalityNotAvailablePopup
 import co.edu.udea.compumovil.gr04_20262.lab2.R
+import co.edu.udea.compumovil.gr04_20262.lab2.worker.WorkScheduler
 import co.edu.udea.compumovil.gr04_20262.lab2.blur.backdropBlur
 import co.edu.udea.compumovil.gr04_20262.lab2.components.JetchatAppBar
 import co.edu.udea.compumovil.gr04_20262.lab2.components.rememberHeartReactionMeshGradientPainter
@@ -152,8 +154,8 @@ fun ConversationContent(
     onNavIconPressed: () -> Unit = { },
     onMessageLikeToggled: (messageId: String) -> Unit = { },
 ) {
-    val authorMe = stringResource(R.string.author_me)
-    val timeNow = stringResource(id = R.string.now)
+    val authorMe = AUTHOR_ME
+    val appContext = LocalContext.current.applicationContext
 
     val scrollState = rememberLazyListState()
     val topBarState = rememberTopAppBarState()
@@ -178,7 +180,7 @@ fun ConversationContent(
                 }
 
                 uiState.addMessage(
-                    Message(authorMe, clipData.getItemAt(0).text.toString(), timeNow),
+                    Message(authorMe, clipData.getItemAt(0).text.toString(), currentTime()),
                 )
 
                 return true
@@ -228,17 +230,19 @@ fun ConversationContent(
                             Message(
                                 author = authorMe,
                                 content = annotatedContent.text,
-                                timestamp = timeNow,
+                                timestamp = currentTime(),
                                 annotatedContent = annotatedContent.takeIf { it.spanStyles.isNotEmpty() },
                             ),
                         )
+                        // Lab 2: un worker pide la respuesta al servicio REST en segundo plano
+                        WorkScheduler.reply(appContext, annotatedContent.text)
                     },
                     onVideoMessageSent = { videoUri, caption ->
                         uiState.addMessage(
                             Message(
                                 author = authorMe,
                                 content = caption.text,
-                                timestamp = timeNow,
+                                timestamp = currentTime(),
                                 videoUri = videoUri,
                                 annotatedContent = caption.takeIf { it.spanStyles.isNotEmpty() },
                             ),
@@ -456,7 +460,7 @@ fun Messages(
     val scope = rememberCoroutineScope()
     Box(modifier = modifier) {
 
-        val authorMe = stringResource(id = R.string.author_me)
+        val authorMe = AUTHOR_ME
         LazyColumn(
             reverseLayout = true,
             state = scrollState,
@@ -479,7 +483,7 @@ fun Messages(
                     }
                 } else if (index == 2) {
                     item(key = "header_today", contentType = "header") {
-                        DayHeader("Today")
+                        DayHeader(stringResource(R.string.today))
                     }
                 }
 
@@ -660,7 +664,7 @@ private fun AuthorNameTimestamp(msg: Message, modifier: Modifier = Modifier, onA
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = msg.author,
+                text = if (msg.author == AUTHOR_ME) stringResource(R.string.author_me) else msg.author,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
             )
@@ -949,3 +953,10 @@ fun DayHeaderPrev() {
 }
 
 private val JumpToBottomThreshold = 56.dp
+
+/** Clave interna del usuario actual en los mensajes (no se traduce). */
+const val AUTHOR_ME = "me"
+
+/** Hora actual con el formato del teléfono, para los mensajes que se envían. */
+private fun currentTime(): String =
+    java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT).format(java.util.Date())

@@ -32,6 +32,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
+import androidx.test.rule.GrantPermissionRule
 import org.junit.Rule
 import org.junit.Test
 
@@ -39,8 +40,11 @@ import org.junit.Test
  * Checks that the navigation flows in the app are correct.
  */
 class NavigationTest {
+    // El permiso de notificaciones se concede antes de abrir la app para que su diálogo no tape la UI
+    @get:Rule(order = 0)
+    val notifications: GrantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
 
-    @get:Rule
+    @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<NavActivity>()
 
     @Test
@@ -71,7 +75,7 @@ class NavigationTest {
      */
     @Test
     fun drawer_conversationScreen_backstackPopUp() {
-        navigateToProfile("Ali Conors (you)")
+        navigateToProfile(composeTestRule.activity.getString(R.string.drawer_me))
         navigateToHomeFromProfile()
         navigateToProfile("Taylor Brooks")
         navigateToHomeFromProfile()

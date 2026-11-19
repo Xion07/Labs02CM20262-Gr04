@@ -20,6 +20,14 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.os.Build
+import android.text.format.DateFormat
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.work.WorkInfo
+import co.edu.udea.compumovil.gr04_20262.lab2.worker.WorkScheduler
+import java.util.Date
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
@@ -78,16 +86,19 @@ fun JetchatDrawerContent(selectedKey: NavKey, onNavigate: (NavKey) -> Unit) {
         Spacer(Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
         DrawerHeader()
         DividerItem()
-        DrawerItemHeader("Chats")
+        DrawerItemHeader(stringResource(R.string.drawer_chats))
         ChatItem(Conversation("composers"), selectedKey, onNavigate)
         ChatItem(Conversation("droidcon-nyc"), selectedKey, onNavigate)
         DividerItem(modifier = Modifier.padding(horizontal = 28.dp))
-        DrawerItemHeader("Recent Profiles")
-        ProfileItem("Ali Conors (you)", meProfile.photo, Profile(meProfile.userId), selectedKey, onNavigate)
+        DrawerItemHeader(stringResource(R.string.drawer_recent_profiles))
+        ProfileItem(stringResource(R.string.drawer_me), meProfile.photo, Profile(meProfile.userId), selectedKey, onNavigate)
         ProfileItem("Taylor Brooks", colleagueProfile.photo, Profile(colleagueProfile.userId), selectedKey, onNavigate)
+        DividerItem(modifier = Modifier.padding(horizontal = 28.dp))
+        DrawerItemHeader(stringResource(R.string.drawer_background))
+        BackgroundServiceItem()
         if (widgetAddingIsSupported(LocalContext.current)) {
             DividerItem(modifier = Modifier.padding(horizontal = 28.dp))
-            DrawerItemHeader("Settings")
+            DrawerItemHeader(stringResource(R.string.drawer_settings))
             WidgetDiscoverability()
         }
     }
@@ -237,6 +248,55 @@ fun DrawerPreviewDark() {
         }
     }
 }
+
+/**
+ * Lab 2: muestra en vivo el estado de los workers (tarea periódica y última frase pedida)
+ * y permite pedir una frase al servicio REST en este momento.
+ */
+@Composable
+private fun BackgroundServiceItem() {
+    val context = LocalContext.current.applicationContext
+    val periodic by remember { WorkScheduler.periodicInfo(context) }.collectAsState(initial = null)
+    val now by remember { WorkScheduler.nowInfo(context) }.collectAsState(initial = null)
+    val running = now?.state == WorkInfo.State.RUNNING || now?.state == WorkInfo.State.ENQUEUED
+    Column(modifier = Modifier.padding(horizontal = 28.dp, vertical = 4.dp)) {
+        Text(
+            text = stringResource(R.string.worker_periodic, stateLabel(periodic?.state)),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        val next = periodic?.nextScheduleTimeMillis?.takeIf { it in 1 until Long.MAX_VALUE }
+        if (next != null && periodic?.state == WorkInfo.State.ENQUEUED) {
+            Text(
+                text = stringResource(R.string.worker_next, DateFormat.getTimeFormat(context).format(Date(next))),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Text(
+            text = stringResource(R.string.worker_last, stateLabel(now?.state)),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.height(8.dp))
+        FilledTonalButton(onClick = { WorkScheduler.syncNow(context) }, enabled = !running) {
+            Text(stringResource(if (running) R.string.worker_running else R.string.worker_sync_now))
+        }
+    }
+}
+
+@Composable
+private fun stateLabel(state: WorkInfo.State?): String = stringResource(
+    when (state) {
+        WorkInfo.State.ENQUEUED -> R.string.work_enqueued
+        WorkInfo.State.RUNNING -> R.string.work_running
+        WorkInfo.State.SUCCEEDED -> R.string.work_succeeded
+        WorkInfo.State.FAILED -> R.string.work_failed
+        WorkInfo.State.BLOCKED -> R.string.work_blocked
+        WorkInfo.State.CANCELLED -> R.string.work_cancelled
+        null -> R.string.work_none
+    },
+)
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

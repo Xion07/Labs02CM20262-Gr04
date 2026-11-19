@@ -77,5 +77,27 @@
     <!-- Lab 2: worker / notificaciones -->
     <string name="notif_channel_name">Frases</string>
     <string name="notif_title">Nueva frase de Quote Bot</string>
-
+    <!-- Lab 2: menu lateral y workers -->
+    <string name="drawer_chats">Chats</string>
+    <string name="drawer_recent_profiles">Perfiles recientes</string>
+    <string name="drawer_me">Ali Conors (tú)</string>
+    <string name="drawer_settings">Ajustes</string>
+    <string name="drawer_background">Servicio en segundo plano</string>
+    <string name="worker_periodic">Cada 15 min: %1$s</string>
+    <string name="worker_next">Próxima ejecución después de las %1$s</string>
+    <string name="worker_last">Última solicitud: %1$s</string>
+    <string name="worker_sync_now">Recibir un mensaje ahora</string>
+    <string name="worker_running">Consultando…</string>
+    <string name="work_enqueued">programada</string>
+    <string name="work_running">en ejecución</string>
+    <string name="work_succeeded">lista</string>
+    <string name="work_failed">falló</string>
+    <string name="work_blocked">en espera</string>
+    <string name="work_cancelled">cancelada</string>
+    <string name="work_none">sin ejecutar</string>
+    <string name="today">Hoy</string>
+    <string name="profile_rest_job">Cargo (servicio REST)</string>
+    <string name="profile_job_at">%1$s en %2$s</string>
+    <string name="profile_rest_email">Correo (servicio REST)</string>
+    <string name="profile_rest_username">Usuario (servicio REST)</string>
 </resources>
