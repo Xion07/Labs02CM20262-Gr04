@@ -54,7 +54,7 @@ class QuoteWorker(private val context: Context, params: WorkerParameters) :
                 NotificationChannel(
                     CHANNEL_ID,
                     context.getString(R.string.notif_channel_name),
-                    NotificationManager.IMPORTANCE_DEFAULT,
+                    NotificationManager.IMPORTANCE_LOW,
                 ),
             )
         }

@@ -18,7 +18,17 @@ interface DummyJsonApi {
     /** Devuelve los datos de un usuario. Lo consume la pantalla de perfil. */
     @GET("users/{id}")
     suspend fun user(@Path("id") id: Int): UserDto
+
+    /** Devuelve un comentario con su autor. Lo consume el worker de respuestas. */
+    @GET("comments/{id}")
+    suspend fun comment(@Path("id") id: Int): CommentDto
 }
+
+@Serializable
+data class CommentUserDto(val id: Int = 0, val username: String = "", val fullName: String = "")
+
+@Serializable
+data class CommentDto(val id: Int = 0, val body: String, val user: CommentUserDto = CommentUserDto())
 
 @Serializable
 data class QuoteDto(val id: Int = 0, val quote: String, val author: String)

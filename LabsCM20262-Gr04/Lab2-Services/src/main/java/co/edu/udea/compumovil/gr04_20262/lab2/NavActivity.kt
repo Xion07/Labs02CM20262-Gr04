@@ -42,10 +42,13 @@ class NavActivity : ComponentActivity() {
             // Programa el worker haya o no permiso de notificaciones
             WorkScheduler.schedule(this)
         }
-        if (Build.VERSION.SDK_INT >= 33) {
-            permission.launch(Manifest.permission.POST_NOTIFICATIONS)
-        } else {
-            WorkScheduler.schedule(this)
+        // Solo la primera vez: al girar la pantalla no se repite el permiso ni la frase inmediata
+        if (savedInstanceState == null) {
+            if (Build.VERSION.SDK_INT >= 33) {
+                permission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                WorkScheduler.schedule(this)
+            }
         }
 
         setContent {
